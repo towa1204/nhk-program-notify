@@ -5,15 +5,15 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
-import * as $about from "./routes/about.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $api_random_uuid from "./routes/api/random-uuid.ts";
-import * as $countdown from "./routes/countdown.tsx";
-import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
-import * as $search from "./routes/search.tsx";
+import * as $nhkapi from "./routes/nhkapi.tsx";
+import * as $notification from "./routes/notification.tsx";
+import * as $program from "./routes/program.tsx";
 import * as $Countdown from "./islands/Countdown.tsx";
 import * as $Counter from "./islands/Counter.tsx";
+import * as $Input from "./islands/Input.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -21,17 +21,17 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
-    "./routes/about.tsx": $about,
     "./routes/api/joke.ts": $api_joke,
     "./routes/api/random-uuid.ts": $api_random_uuid,
-    "./routes/countdown.tsx": $countdown,
-    "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
-    "./routes/search.tsx": $search,
+    "./routes/nhkapi.tsx": $nhkapi,
+    "./routes/notification.tsx": $notification,
+    "./routes/program.tsx": $program,
   },
   islands: {
     "./islands/Countdown.tsx": $Countdown,
     "./islands/Counter.tsx": $Counter,
+    "./islands/Input.tsx": $Input,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
