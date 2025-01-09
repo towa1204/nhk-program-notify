@@ -9,8 +9,6 @@ import * as $index from "./routes/index.tsx";
 import * as $nhkapi from "./routes/nhkapi.tsx";
 import * as $notification from "./routes/notification.tsx";
 import * as $program from "./routes/program.tsx";
-import * as $Countdown from "./islands/Countdown.tsx";
-import * as $Counter from "./islands/Counter.tsx";
 import * as $Input from "./islands/Input.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -25,8 +23,6 @@ const manifest = {
     "./routes/program.tsx": $program,
   },
   islands: {
-    "./islands/Countdown.tsx": $Countdown,
-    "./islands/Counter.tsx": $Counter,
     "./islands/Input.tsx": $Input,
   },
   baseUrl: import.meta.url,
