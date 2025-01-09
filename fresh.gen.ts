@@ -5,8 +5,6 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
-import * as $api_joke from "./routes/api/joke.ts";
-import * as $api_random_uuid from "./routes/api/random-uuid.ts";
 import * as $index from "./routes/index.tsx";
 import * as $nhkapi from "./routes/nhkapi.tsx";
 import * as $notification from "./routes/notification.tsx";
@@ -21,8 +19,6 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
-    "./routes/api/joke.ts": $api_joke,
-    "./routes/api/random-uuid.ts": $api_random_uuid,
     "./routes/index.tsx": $index,
     "./routes/nhkapi.tsx": $nhkapi,
     "./routes/notification.tsx": $notification,
