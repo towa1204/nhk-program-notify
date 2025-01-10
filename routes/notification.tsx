@@ -8,6 +8,7 @@ import {
 } from "../backend/cookie.ts";
 import { Notification } from "../backend/schema.ts";
 import { notificationService } from "../backend/bean.ts";
+import { WithErrorMessage } from "./types.ts";
 
 export const handler: Handlers = {
   async GET(req, ctx) {
@@ -15,15 +16,14 @@ export const handler: Handlers = {
 
     const notificationProps = await notificationService.get();
 
-    const initialData: Notification & { errorMessage?: string } = {
+    const initData: WithErrorMessage<Notification> = {
       ...notificationProps,
       errorMessage: message,
     };
 
-    return ctx.render(initialData, { headers: resHeaders });
+    return ctx.render(initData, { headers: resHeaders });
   },
   async POST(req, ctx) {
-    /** バリデーションはAPI側でやる */
     const form = await req.formData();
 
     // const selectType = form.get("type") as string;
@@ -53,7 +53,7 @@ export const handler: Handlers = {
 };
 
 export default function NotificationPage(
-  { data }: PageProps<Notification & { errorMessage?: string }>,
+  { data }: PageProps<WithErrorMessage<Notification>>,
 ) {
   const { selectNow, LineApi, errorMessage } = data;
   return (

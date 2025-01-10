@@ -10,6 +10,7 @@ import * as $index from "./routes/index.tsx";
 import * as $nhkapi from "./routes/nhkapi.tsx";
 import * as $notification from "./routes/notification.tsx";
 import * as $program from "./routes/program.tsx";
+import * as $types from "./routes/types.ts";
 import * as $Input from "./islands/Input.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -23,6 +24,7 @@ const manifest = {
     "./routes/nhkapi.tsx": $nhkapi,
     "./routes/notification.tsx": $notification,
     "./routes/program.tsx": $program,
+    "./routes/types.ts": $types,
   },
   islands: {
     "./islands/Input.tsx": $Input,

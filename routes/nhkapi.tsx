@@ -8,6 +8,7 @@ import {
 } from "../backend/cookie.ts";
 import { nhkApiService } from "../backend/bean.ts";
 import { NhkApi } from "../backend/schema.ts";
+import { WithErrorMessage } from "./types.ts";
 
 const AREA_MASTER = [
   { value: "010", label: "札幌" },
@@ -72,12 +73,12 @@ export const handler: Handlers = {
 
     const nhkapiProps = await nhkApiService.get();
 
-    const initialData: NhkApi & { errorMessage?: string } = {
+    const initData: WithErrorMessage<NhkApi> = {
       ...nhkapiProps,
       errorMessage: message,
     };
 
-    return ctx.render(initialData, { headers: resHeaders });
+    return ctx.render(initData, { headers: resHeaders });
   },
   async POST(req, ctx) {
     const form = await req.formData();
@@ -105,7 +106,7 @@ export const handler: Handlers = {
 };
 
 export default function NhkApiPage(
-  { data }: PageProps<NhkApi & { errorMessage?: string }>,
+  { data }: PageProps<WithErrorMessage<NhkApi>>,
 ) {
   const { area, nhkApiKey, errorMessage } = data;
 
