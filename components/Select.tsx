@@ -18,7 +18,7 @@ export default function Select({
     <div className="relative w-full  max-w-sm">
       <select
         name={name}
-        className="block w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-base text-gray-500 hover:border-gray-500"
+        className="block w-full appearance-none rounded-lg border border-gray-200 px-4 py-2 text-base hover:border-gray-500"
         value={selected}
       >
         {options.map((option, index) => (

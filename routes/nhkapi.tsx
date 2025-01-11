@@ -9,6 +9,7 @@ import {
 import { nhkApiService } from "../backend/bean.ts";
 import { NhkApi } from "../backend/schema.ts";
 import { WithErrorMessage } from "./types.ts";
+import { HomeButton } from "../components/HomeButton.tsx";
 
 const AREA_MASTER = [
   { value: "010", label: "札幌" },
@@ -111,43 +112,48 @@ export default function NhkApiPage(
   const { area, nhkApiKey, errorMessage } = data;
 
   return (
-    <div className="rounded-md border border-gray-200/60 bg-gray-100/30 p-6">
-      <header className="mb-4 flex justify-between gap-3">
-        <hgroup>
-          <h2 className="text-lg font-medium !leading-none text-black">
-            NHK API
-          </h2>
-          <h3 className="mt-1 !leading-tight text-gray-500">
-            放送エリアとAPIキーを設定
-          </h3>
-        </hgroup>
-      </header>
+    <>
+      <div className="rounded-md border border-gray-200/60 bg-gray-100/30 p-6">
+        <header className="mb-4 flex justify-between gap-3">
+          <hgroup>
+            <h2 className="text-lg font-medium !leading-none text-black">
+              NHK API
+            </h2>
+            <h3 className="mt-1 !leading-tight text-gray-500">
+              放送エリアとAPIキーを設定
+            </h3>
+          </hgroup>
+        </header>
 
-      {errorMessage && (
-        <div
-          class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 whitespace-pre-wrap"
-          role="alert"
-        >
-          {errorMessage}
-        </div>
-      )}
+        {errorMessage && (
+          <div
+            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 whitespace-pre-wrap"
+            role="alert"
+          >
+            {errorMessage}
+          </div>
+        )}
 
-      <form method="post">
-        <Select
-          name="areaNumber"
-          selected={area}
-          options={AREA_MASTER}
-        />
-        <Input
-          name="apiKey"
-          placeholder="NHK APIキー"
-          isSecret
-          value={nhkApiKey}
-        />
-        <div className="mt-3">
-          <SaveButton isDisabled={false} />
-        </div>
-      </form>
-    </div>
+        <form method="post">
+          <Select
+            name="areaNumber"
+            selected={area}
+            options={AREA_MASTER}
+          />
+          <Input
+            name="apiKey"
+            placeholder="NHK APIキー"
+            isSecret
+            value={nhkApiKey}
+          />
+          <div className="mt-3">
+            <SaveButton isDisabled={false} />
+          </div>
+        </form>
+      </div>
+      <div class="mt-2">
+        <HomeButton />
+      </div>
+    </>
   );
 }

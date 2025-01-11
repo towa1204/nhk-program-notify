@@ -5,6 +5,7 @@ import {
   setErrorMessageOnCookie,
 } from "../backend/cookie.ts";
 import { ProgramTitle } from "../backend/schema.ts";
+import { HomeButton } from "../components/HomeButton.tsx";
 import ProgramForm from "../islands/PrgoramForm.tsx";
 import { WithErrorMessage } from "./types.ts";
 
@@ -48,28 +49,33 @@ export default function ProgramPage(
   const { errorMessage } = data;
 
   return (
-    <div className="rounded-md border border-gray-200/60 bg-gray-100/30 p-6">
-      <header className="mb-4 flex justify-between gap-3">
-        <hgroup>
-          <h2 className="text-lg font-medium !leading-none text-black">
-            Program
-          </h2>
-          <h3 className="mt-1 !leading-tight text-gray-500">
-            通知したい番組を設定
-          </h3>
-        </hgroup>
-      </header>
+    <>
+      <div className="rounded-md border border-gray-200/60 bg-gray-100/30 p-6">
+        <header className="mb-4 flex justify-between gap-3">
+          <hgroup>
+            <h2 className="text-lg font-medium !leading-none text-black">
+              Program
+            </h2>
+            <h3 className="mt-1 !leading-tight text-gray-500">
+              通知したい番組を設定
+            </h3>
+          </hgroup>
+        </header>
 
-      {errorMessage && (
-        <div
-          class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-          role="alert"
-        >
-          {errorMessage}
-        </div>
-      )}
+        {errorMessage && (
+          <div
+            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
+          >
+            {errorMessage}
+          </div>
+        )}
 
-      <ProgramForm initialPrograms={data} />
-    </div>
+        <ProgramForm initialPrograms={data} />
+      </div>
+      <div class="mt-2">
+        <HomeButton />
+      </div>
+    </>
   );
 }
