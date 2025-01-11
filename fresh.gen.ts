@@ -12,6 +12,8 @@ import * as $notification from "./routes/notification.tsx";
 import * as $program from "./routes/program.tsx";
 import * as $types from "./routes/types.ts";
 import * as $Input from "./islands/Input.tsx";
+import * as $PrgoramForm from "./islands/PrgoramForm.tsx";
+import * as $ProgramInput from "./islands/ProgramInput.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -28,6 +30,8 @@ const manifest = {
   },
   islands: {
     "./islands/Input.tsx": $Input,
+    "./islands/PrgoramForm.tsx": $PrgoramForm,
+    "./islands/ProgramInput.tsx": $ProgramInput,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

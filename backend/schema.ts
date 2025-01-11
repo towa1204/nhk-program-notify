@@ -3,7 +3,7 @@ import { z } from "zod";
 export const ProgramTitleSchema = z.object({
   programs: z.array(
     z.object({
-      title: z.string(),
+      title: z.string().nonempty(),
     }),
   ),
 });
