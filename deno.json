@@ -3,15 +3,24 @@
   "tasks": {
     "test": "deno test -R --unstable-kv --parallel",
     "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx && deno task test",
-    "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task cli manifest $(pwd)",
-    "start": "deno run -A --unstable-kv --watch=static/,routes/ dev.ts",
+    "start": "deno run -A --unstable-kv --watch=static/,routes/ --env=.env.local dev.ts",
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update ."
   },
-  "lint": { "rules": { "tags": ["fresh", "recommended"] } },
-  "exclude": ["**/_fresh/*", "node_modules/"],
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ]
+    }
+  },
+  "exclude": [
+    "**/_fresh/*",
+    "node_modules/"
+  ],
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.7.3/",
     "@std/assert": "jsr:@std/assert@^1.0.10",
@@ -26,7 +35,12 @@
     "$std/": "https://deno.land/std@0.216.0/",
     "zod": "npm:zod@^3.24.1"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
   "nodeModulesDir": "auto",
-  "unstable": ["cron"]
+  "unstable": [
+    "cron"
+  ]
 }
