@@ -1,7 +1,7 @@
-import AppCard from "../components/AppCard.tsx";
+import PageCard from "../components/PageCard.tsx";
 
 export default function Home() {
-  const appsInfo = [
+  const settings = [
     {
       name: "Program",
       description: `通知する番組を設定`,
@@ -22,9 +22,9 @@ export default function Home() {
   return (
     <>
       <div className="space-y-4">
-        {appsInfo.map(({ name, description, link }) => {
-          return <AppCard name={name} description={description} link={link} />;
-        })}
+        {settings.map(({ name, description, link }) => (
+          <PageCard name={name} description={description} link={link} />
+        ))}
       </div>
     </>
   );
