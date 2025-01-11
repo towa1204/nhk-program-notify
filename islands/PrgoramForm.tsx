@@ -20,7 +20,7 @@ export default function ProgramForm(
         {programs.map((program, index) => (
           <ProgramInput
             name="programs"
-            placeholder="Programs"
+            placeholder="番組タイトル"
             value={program.title}
             key={index}
             deletePrograms={createDeletePrograms(index)}

@@ -64,7 +64,7 @@ export default function NotificationPage(
             Notification
           </h2>
           <h3 className="mt-1 !leading-tight text-gray-500">
-            Set notification type and configuration
+            通知先の情報を設定
           </h3>
         </hgroup>
       </header>
@@ -96,15 +96,15 @@ export default function NotificationPage(
 
           <Input
             name="userid"
-            placeholder="UserID"
+            placeholder="ユーザID"
             isSecret={false}
             value={LineApi.userID}
           />
 
           <Input
             name="token"
-            placeholder="AccessToken"
-            isSecret={true}
+            placeholder="アクセストークン"
+            isSecret
             value={LineApi.accessToken}
           />
         </div>

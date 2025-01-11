@@ -23,7 +23,6 @@ export const handler: Handlers = {
   },
   async POST(req, ctx) {
     const form = await req.formData();
-    console.log(form.getAll("programs"));
 
     const resHeaders = new Headers({
       "Location": ctx.url.pathname,
@@ -56,7 +55,7 @@ export default function ProgramPage(
             Program
           </h2>
           <h3 className="mt-1 !leading-tight text-gray-500">
-            Set programs to be notified
+            通知したい番組を設定
           </h3>
         </hgroup>
       </header>

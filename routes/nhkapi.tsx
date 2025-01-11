@@ -118,7 +118,7 @@ export default function NhkApiPage(
             NHK API
           </h2>
           <h3 className="mt-1 !leading-tight text-gray-500">
-            Set broadcast area and API key
+            放送エリアとAPIキーを設定
           </h3>
         </hgroup>
       </header>
@@ -140,8 +140,8 @@ export default function NhkApiPage(
         />
         <Input
           name="apiKey"
-          placeholder="NHK API Key"
-          isSecret={true}
+          placeholder="NHK APIキー"
+          isSecret
           value={nhkApiKey}
         />
         <div className="mt-3">
