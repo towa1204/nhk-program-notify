@@ -2,11 +2,12 @@ import { afterEach, beforeEach, describe, it } from "@std/testing/bdd";
 
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertRejects } from "@std/assert";
 import { Repository } from "../common/types.ts";
 import { Program } from "../schema.ts";
 import { ProgramRepository } from "../repository/ProgramRepository.ts";
 import { ProgramService } from "./ProgramService.ts";
+import { NotFoundConfigError } from "../common/exception.ts";
 
 describe("ProgramsService", () => {
   let kv: Deno.Kv;
@@ -26,7 +27,7 @@ describe("ProgramsService", () => {
     await kv.close();
   });
 
-  it("get", async () => {
+  it("get: データがセットされており取得可", async () => {
     const service = new ProgramService(repository);
     const result = await service.get();
     assertEquals(result, {
@@ -47,6 +48,12 @@ describe("ProgramsService", () => {
     });
   });
 
+  it("get: データがセットされておらず例外を送出", async () => {
+    await kv.delete(KV_KEYS.PROGRAMS);
+    const service = new ProgramService(repository);
+    await assertRejects(async () => await service.get(), NotFoundConfigError);
+  });
+
   it("validateAndSave: みんなのうたを削除", async () => {
     const service = new ProgramService(repository);
     const result = await service.validateAndSave({
@@ -60,6 +67,15 @@ describe("ProgramsService", () => {
           "title": "ザ・バックヤード",
         },
       ],
+    });
+    assertEquals(result.success, true);
+    assertEquals(result.message, null);
+  });
+
+  it("validateAndSave: すべての番組を削除", async () => {
+    const service = new ProgramService(repository);
+    const result = await service.validateAndSave({
+      "programs": [],
     });
     assertEquals(result.success, true);
     assertEquals(result.message, null);

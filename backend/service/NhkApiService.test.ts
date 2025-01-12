@@ -3,9 +3,10 @@ import { NhkApiRepository } from "../repository/NhkApiRepository.ts";
 import { NhkApiService } from "./NhkApiService.ts";
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertRejects } from "@std/assert";
 import { Repository } from "../common/types.ts";
 import { NhkApi } from "../schema.ts";
+import { NotFoundConfigError } from "../common/exception.ts";
 
 describe("NhkApiService", () => {
   let kv: Deno.Kv;
@@ -25,7 +26,7 @@ describe("NhkApiService", () => {
     await kv.close();
   });
 
-  it("get", async () => {
+  it("get: データがセットされており取得可", async () => {
     const service = new NhkApiService(repository);
     const result = await service.get();
     assertEquals(result, {
@@ -36,6 +37,12 @@ describe("NhkApiService", () => {
       ],
       "nhkApiKey": "nhk-api-key",
     });
+  });
+
+  it("get: データがセットされておらず例外を送出", async () => {
+    await kv.delete(KV_KEYS.NHKAPI);
+    const service = new NhkApiService(repository);
+    await assertRejects(async () => await service.get(), NotFoundConfigError);
   });
 
   it("validateAndSave: areaを100に変更", async () => {

@@ -1,11 +1,12 @@
 import { afterEach, beforeEach, describe, it } from "@std/testing/bdd";
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertRejects } from "@std/assert";
 import { Repository } from "../common/types.ts";
 import { Notification } from "../schema.ts";
 import { NotificationRepository } from "../repository/NotificationRepository.ts";
 import { NotificationService } from "./NotificationService.ts";
+import { NotFoundConfigError } from "../common/exception.ts";
 
 describe("NotificationService", () => {
   let kv: Deno.Kv;
@@ -25,7 +26,7 @@ describe("NotificationService", () => {
     await kv.close();
   });
 
-  it("get", async () => {
+  it("get: データがセットされており取得可", async () => {
     const service = new NotificationService(repository);
     const result = await service.get();
     assertEquals(result, {
@@ -35,6 +36,12 @@ describe("NotificationService", () => {
         "accessToken": "access-token",
       },
     });
+  });
+
+  it("get: データがセットされておらず例外を送出", async () => {
+    await kv.delete(KV_KEYS.NOTIFICATION);
+    const service = new NotificationService(repository);
+    await assertRejects(async () => await service.get(), NotFoundConfigError);
   });
 
   it("validateAndSave: userIDを変更", async () => {
