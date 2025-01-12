@@ -14,7 +14,6 @@ export const handler: Handlers = {
     const { message, resHeaders } = getErrorMessageOnCookie(req.headers);
 
     const programProps = await programService.get();
-    console.log(programProps);
 
     const initData: WithErrorMessage<Program> = {
       ...programProps,
