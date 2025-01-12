@@ -1,13 +1,14 @@
 import { z } from "zod";
 
-export const ProgramTitleSchema = z.object({
+export const ProgramSchema = z.object({
   programs: z.array(
     z.object({
+      enabled: z.boolean(),
       title: z.string().nonempty(),
     }),
   ),
 });
-export type ProgramTitle = z.infer<typeof ProgramTitleSchema>;
+export type Program = z.infer<typeof ProgramSchema>;
 
 export const NhkApiSchema = z.object({
   area: z.string(),
@@ -25,7 +26,7 @@ export const NotificationSchema = z.object({
 });
 export type Notification = z.infer<typeof NotificationSchema>;
 
-export const ConfigSchema = ProgramTitleSchema
+export const ConfigSchema = ProgramSchema
   .merge(NhkApiSchema)
   .merge(NotificationSchema);
 

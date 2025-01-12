@@ -1,10 +1,10 @@
 import { useState } from "preact/hooks";
 import SaveButton from "../components/SaveButton.tsx";
 import ProgramInput from "./ProgramInput.tsx";
-import { ProgramTitle } from "../backend/schema.ts";
+import { Program } from "../backend/schema.ts";
 
 export default function ProgramForm(
-  { initData }: { initData: ProgramTitle },
+  { initData }: { initData: Program },
 ) {
   const [programs, setPrograms] = useState(initData.programs);
 
@@ -20,9 +20,8 @@ export default function ProgramForm(
       <div className="mt-3">
         {programs.map((program, index) => (
           <ProgramInput
-            name="programs"
             placeholder="番組タイトル"
-            initValue={program.title}
+            initData={program}
             key={index}
             deletePrograms={createDeletePrograms(index)}
           />
@@ -31,7 +30,7 @@ export default function ProgramForm(
           <button
             type="button"
             onClick={() => {
-              setPrograms([...programs, { title: "" }]);
+              setPrograms([...programs, { enabled: true, title: "" }]);
             }}
             className="h-8 whitespace-nowrap rounded-md border border-gray-200 bg-gray-100 px-3.5 leading-none text-gray-900  transition-colors duration-150 ease-in-out hover:border-gray-300 hover:bg-gray-200"
           >

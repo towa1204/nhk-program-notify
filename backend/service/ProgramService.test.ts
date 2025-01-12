@@ -4,13 +4,13 @@ import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
 import { assertEquals } from "@std/assert";
 import { Repository } from "../common/types.ts";
-import { ProgramTitle } from "../schema.ts";
+import { Program } from "../schema.ts";
 import { ProgramRepository } from "../repository/ProgramRepository.ts";
 import { ProgramService } from "./ProgramService.ts";
 
 describe("ProgramsService", () => {
   let kv: Deno.Kv;
-  let repository: Repository<ProgramTitle>;
+  let repository: Repository<Program>;
 
   beforeEach(async () => {
     kv = await Deno.openKv(":memory:");
@@ -32,12 +32,15 @@ describe("ProgramsService", () => {
     assertEquals(result, {
       "programs": [
         {
+          "enabled": true,
           "title": "100分de名著シリーズ",
         },
         {
+          "enabled": true,
           "title": "ザ・バックヤード",
         },
         {
+          "enabled": false,
           "title": "みんなのうた",
         },
       ],
@@ -49,9 +52,11 @@ describe("ProgramsService", () => {
     const result = await service.validateAndSave({
       "programs": [
         {
+          "enabled": true,
           "title": "100分de名著シリーズ",
         },
         {
+          "enabled": true,
           "title": "ザ・バックヤード",
         },
       ],
@@ -65,9 +70,11 @@ describe("ProgramsService", () => {
     const result = await service.validateAndSave({
       "programs": [
         {
+          "enabled": true,
           "title": "100分de名著シリーズ",
         },
         {
+          "enabled": true,
           "title": "",
         },
       ],

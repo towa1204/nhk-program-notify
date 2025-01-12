@@ -4,7 +4,7 @@ import {
   getErrorMessageOnCookie,
   setErrorMessageOnCookie,
 } from "../backend/cookie.ts";
-import { ProgramTitle } from "../backend/schema.ts";
+import { Program } from "../backend/schema.ts";
 import { HomeButton } from "../components/HomeButton.tsx";
 import ProgramForm from "../islands/PrgoramForm.tsx";
 import { WithErrorMessage } from "./types.ts";
@@ -13,10 +13,11 @@ export const handler: Handlers = {
   async GET(req, ctx) {
     const { message, resHeaders } = getErrorMessageOnCookie(req.headers);
 
-    const programTitlesProps = await programService.get();
+    const programProps = await programService.get();
+    console.log(programProps);
 
-    const initData: WithErrorMessage<ProgramTitle> = {
-      ...programTitlesProps,
+    const initData: WithErrorMessage<Program> = {
+      ...programProps,
       errorMessage: message,
     };
 
@@ -24,13 +25,19 @@ export const handler: Handlers = {
   },
   async POST(req, ctx) {
     const form = await req.formData();
+    const receivedPrograms = form.getAll("programEnabled").map((_, i) => {
+      return {
+        enabled: form.getAll("programEnabled")[i] === "on" ? true : false,
+        title: form.getAll("programTitle")[i],
+      };
+    });
 
     const resHeaders = new Headers({
       "Location": ctx.url.pathname,
     });
 
     const result = await programService.validateAndSave({
-      programs: form.getAll("programs").map((title) => ({ title })),
+      programs: receivedPrograms,
     });
     if (!result.success) {
       setErrorMessageOnCookie(resHeaders, result.message.join("\n"));
@@ -44,7 +51,7 @@ export const handler: Handlers = {
 };
 
 export default function ProgramPage(
-  { data }: PageProps<WithErrorMessage<ProgramTitle>>,
+  { data }: PageProps<WithErrorMessage<Program>>,
 ) {
   const { errorMessage } = data;
 
