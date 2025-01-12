@@ -3,15 +3,15 @@ import { useSignal } from "@preact/signals";
 export default function ProgramInput({
   name,
   placeholder,
-  value,
+  initValue,
   deletePrograms,
 }: {
   name: string;
   placeholder: string | undefined;
-  value: string;
+  initValue: string;
   deletePrograms: () => void;
 }) {
-  const inputVal = useSignal(value);
+  const textValue = useSignal(initValue);
 
   return (
     <div className="mt-3">
@@ -19,10 +19,10 @@ export default function ProgramInput({
         <input
           type="text"
           name={name}
-          value={inputVal}
+          value={textValue}
           className="w-full rounded-lg border px-4 py-2 pr-10 shadow outline-none hover:border-gray-500"
           placeholder={placeholder}
-          onChange={(e) => inputVal.value = e.currentTarget.value}
+          onChange={(e) => textValue.value = e.currentTarget.value}
         />
         <button
           type="button"

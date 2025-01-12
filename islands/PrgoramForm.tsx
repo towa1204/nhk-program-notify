@@ -4,10 +4,11 @@ import ProgramInput from "./ProgramInput.tsx";
 import { ProgramTitle } from "../backend/schema.ts";
 
 export default function ProgramForm(
-  { initialPrograms }: { initialPrograms: ProgramTitle },
+  { initData }: { initData: ProgramTitle },
 ) {
-  const [programs, setPrograms] = useState(initialPrograms.programs);
+  const [programs, setPrograms] = useState(initData.programs);
 
+  /* 指定したindexのみを除外する関数を生成 */
   const createDeletePrograms = (deleteIndex: number) => {
     return () => {
       setPrograms(programs.filter((_, index) => index !== deleteIndex));
@@ -21,7 +22,7 @@ export default function ProgramForm(
           <ProgramInput
             name="programs"
             placeholder="番組タイトル"
-            value={program.title}
+            initValue={program.title}
             key={index}
             deletePrograms={createDeletePrograms(index)}
           />
