@@ -30,7 +30,7 @@ describe("NhkApiService", () => {
     const service = new NhkApiService(repository);
     const result = await service.get();
     assertEquals(result, {
-      "area": "140",
+      "area": "横浜",
       "services": [
         "g1",
         "e1",
@@ -48,7 +48,7 @@ describe("NhkApiService", () => {
   it("validateAndSave: areaを100に変更", async () => {
     const service = new NhkApiService(repository);
     const result = await service.validateAndSave({
-      "area": "100",
+      "area": "前橋",
       "services": [
         "g1",
         "e1",
@@ -62,7 +62,7 @@ describe("NhkApiService", () => {
   it("validateAndSave: nhkApiKeyがない", async () => {
     const service = new NhkApiService(repository);
     const result = await service.validateAndSave({
-      "area": "100",
+      "area": "前橋",
       "services": [
         "g1",
         "e1",
