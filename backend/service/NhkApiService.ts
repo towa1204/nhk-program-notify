@@ -4,14 +4,14 @@ import { NhkApi } from "../schema.ts";
 import { createErrorMessage } from "../common/util.ts";
 
 export class NhkApiService {
-  #repository: Repository<NhkApi>;
+  private readonly repository: Repository<NhkApi>;
 
   constructor(repository: Repository<NhkApi>) {
-    this.#repository = repository;
+    this.repository = repository;
   }
 
   async get(): Promise<NhkApi> {
-    return await this.#repository.get();
+    return await this.repository.get();
   }
 
   async validateAndSave(value: unknown) {
@@ -22,7 +22,7 @@ export class NhkApiService {
         message: createErrorMessage(result.error.issues),
       } as const;
     }
-    await this.#repository.save(result.data);
+    await this.repository.save(result.data);
     return { success: true, message: null } as const;
   }
 }
