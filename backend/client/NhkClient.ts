@@ -1,8 +1,15 @@
 import { ApiClientError } from "../common/exception.ts";
-import { ProgramList, ProgramListReq } from "./nhk_types.ts";
+import { Repository } from "../common/types.ts";
+import { NhkApi } from "../schema.ts";
+import { Program, ProgramList, ProgramListReq } from "./nhk_types.ts";
 
 export interface INhkClient {
-  send: (req: ProgramListReq) => Promise<ProgramList>;
+  /**
+   * 放送日の番組情報を全量取得する
+   * @param date 放送日
+   * @returns 番組情報
+   */
+  fetchPrograms: (date: string) => Promise<Program[]>;
 }
 
 export class NhkClient implements INhkClient {
@@ -65,21 +72,35 @@ export class NhkClient implements INhkClient {
     ["沖縄", "470"],
   ]);
 
-  public async send(
-    programListReq: ProgramListReq,
-  ): Promise<ProgramList> {
-    const url = this.buildUrl(programListReq);
+  private readonly repository: Repository<NhkApi>;
 
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new ApiClientError({
-        url,
-        status: res.status,
-        responseBody: await res.text(),
-        message: "ProgramList APIへの接続に失敗しました",
-      });
+  constructor(repository: Repository<NhkApi>) {
+    this.repository = repository;
+  }
+
+  public async fetchPrograms(
+    date: string,
+  ): Promise<Program[]> {
+    const { area, services, nhkApiKey: apikey } = await this.repository.get();
+
+    const programs: Program[] = [];
+    for (const service of services) {
+      const url = this.buildUrl({ area, service, date, apikey });
+
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new ApiClientError({
+          url,
+          status: res.status,
+          responseBody: await res.text(),
+          message: "ProgramList APIへの接続に失敗しました",
+        });
+      }
+      const programList = await res.json() as ProgramList;
+      programs.push(...programList.list[service]);
     }
-    return await res.json() as ProgramList;
+
+    return programs;
   }
 
   private buildUrl({ area, service, date, apikey }: ProgramListReq) {
