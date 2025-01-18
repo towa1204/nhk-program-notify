@@ -14,7 +14,7 @@ function devSetup() {
         },
       });
     },
-    async save(_: Notification) {},
+    async save(_) {},
   };
   return { mockRepository };
 }
