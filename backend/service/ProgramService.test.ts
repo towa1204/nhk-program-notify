@@ -1,33 +1,25 @@
-import { afterEach, beforeEach, describe, it } from "@std/testing/bdd";
-
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
 import { assertEquals, assertRejects } from "@std/assert";
-import { Repository } from "../common/types.ts";
-import { Program } from "../schema.ts";
 import { ProgramRepository } from "../repository/ProgramRepository.ts";
 import { ProgramService } from "./ProgramService.ts";
 import { NotFoundConfigError } from "../common/exception.ts";
 
-describe("ProgramsService", () => {
-  let kv: Deno.Kv;
-  let repository: Repository<Program>;
+async function setup() {
+  const kv = await Deno.openKv(":memory:");
+  const repository = new ProgramRepository(kv);
+  await setTestDataFromFile(
+    kv,
+    KV_KEYS.PROGRAMS,
+    "backend/testdata/config_programs.json",
+  );
+  return { kv, repository };
+}
 
-  beforeEach(async () => {
-    kv = await Deno.openKv(":memory:");
-    repository = new ProgramRepository(kv);
-    await setTestDataFromFile(
-      kv,
-      KV_KEYS.PROGRAMS,
-      "backend/testdata/config_programs.json",
-    );
-  });
+Deno.test("ProgramsService", async (t) => {
+  await t.step("データを取得できる", async () => {
+    const { kv, repository } = await setup();
 
-  afterEach(async () => {
-    await kv.close();
-  });
-
-  it("get: データがセットされており取得可", async () => {
     const service = new ProgramService(repository);
     const result = await service.get();
     assertEquals(result, {
@@ -46,15 +38,23 @@ describe("ProgramsService", () => {
         },
       ],
     });
+
+    kv.close();
   });
 
-  it("get: データがセットされておらず例外を送出", async () => {
+  await t.step("データがなければ例外を送出する", async () => {
+    const { kv, repository } = await setup();
+
     await kv.delete(KV_KEYS.PROGRAMS);
     const service = new ProgramService(repository);
     await assertRejects(async () => await service.get(), NotFoundConfigError);
+
+    kv.close();
   });
 
-  it("validateAndSave: みんなのうたを削除", async () => {
+  await t.step("番組(みんなのうた)を削除できる", async () => {
+    const { kv, repository } = await setup();
+
     const service = new ProgramService(repository);
     const result = await service.validateAndSave({
       "programs": [
@@ -70,18 +70,26 @@ describe("ProgramsService", () => {
     });
     assertEquals(result.success, true);
     assertEquals(result.message, null);
+
+    kv.close();
   });
 
-  it("validateAndSave: すべての番組を削除", async () => {
+  await t.step("すべての番組を削除できる", async () => {
+    const { kv, repository } = await setup();
+
     const service = new ProgramService(repository);
     const result = await service.validateAndSave({
       "programs": [],
     });
     assertEquals(result.success, true);
     assertEquals(result.message, null);
+
+    kv.close();
   });
 
-  it("validateAndSave: 空文字で送信", async () => {
+  await t.step("番組を空文字で送信するとバリデーションエラー", async () => {
+    const { kv, repository } = await setup();
+
     const service = new ProgramService(repository);
     const result = await service.validateAndSave({
       "programs": [
@@ -99,5 +107,7 @@ describe("ProgramsService", () => {
     assertEquals(result.message, [
       "programs.1.title: String must contain at least 1 character(s)",
     ]);
+
+    kv.close();
   });
 });

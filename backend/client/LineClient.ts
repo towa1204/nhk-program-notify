@@ -1,4 +1,6 @@
 import { ApiClientError } from "../common/exception.ts";
+import { Repository } from "../common/types.ts";
+import { Notification } from "../schema.ts";
 
 export interface ILineClient {
   send: (usedId: string, accessToken: string, message: string) => Promise<void>;
@@ -7,13 +9,19 @@ export interface ILineClient {
 export class LineClient implements ILineClient {
   private static readonly MESSAGING_API_BASE_PATH = "https://api.line.me/v2";
 
+  private readonly repository: Repository<Notification>;
+
+  constructor(repository: Repository<Notification>) {
+    this.repository = repository;
+  }
+
   public async send(
-    usedId: string,
-    accessToken: string,
     message: string,
   ): Promise<void> {
+    const { userid, accessToken } = (await this.repository.get()).LineApi;
+
     const payload = {
-      to: usedId,
+      to: userid,
       messages: [{
         type: "text",
         text: message,
