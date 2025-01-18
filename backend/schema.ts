@@ -20,7 +20,7 @@ export type NhkApi = z.infer<typeof NhkApiSchema>;
 export const NotificationSchema = z.object({
   selectNow: z.literal("LINE"),
   LineApi: z.object({
-    userID: z.string().nonempty(),
+    userid: z.string().nonempty(),
     accessToken: z.string().nonempty(),
   }),
 });

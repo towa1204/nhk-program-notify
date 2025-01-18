@@ -1,7 +1,7 @@
 {
   "selectNow": "LINE",
   "LineApi": {
-    "userID": "user-id",
+    "userid": "user-id",
     "accessToken": "access-token"
   }
 }

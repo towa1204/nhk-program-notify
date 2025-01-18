@@ -32,7 +32,7 @@ describe("NotificationService", () => {
     assertEquals(result, {
       "selectNow": "LINE",
       "LineApi": {
-        "userID": "user-id",
+        "userid": "user-id",
         "accessToken": "access-token",
       },
     });
@@ -49,7 +49,7 @@ describe("NotificationService", () => {
     const result = await service.validateAndSave({
       "selectNow": "LINE",
       "LineApi": {
-        "userID": "user-id-changed",
+        "userid": "user-id-changed",
         "accessToken": "access-token",
       },
     });
@@ -62,7 +62,7 @@ describe("NotificationService", () => {
     const result = await service.validateAndSave({
       "selectNow": "LINE",
       "LineApi": {
-        "userID": "user-id",
+        "userid": "user-id",
       },
     });
     assertEquals(result.success, false);

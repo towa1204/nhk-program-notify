@@ -28,7 +28,7 @@ export const handler: Handlers = {
     const form = await req.formData();
 
     // const selectType = form.get("type") as string;
-    const userID = form.get("userid") as string;
+    const userid = form.get("userid") as string;
     const accessToken = form.get("token") as string;
 
     const resHeaders = new Headers({
@@ -38,7 +38,7 @@ export const handler: Handlers = {
     const result = await notificationService.validateAndSave({
       selectNow: "LINE",
       LineApi: {
-        userID,
+        userid,
         accessToken,
       },
     });
@@ -100,7 +100,7 @@ export default function NotificationPage(
               name="userid"
               placeholder="ユーザID"
               isSecret={false}
-              value={LineApi.userID}
+              value={LineApi.userid}
             />
 
             <Input
