@@ -5,6 +5,3 @@ export function env(key: string) {
   }
   return value;
 }
-
-export const BASIC_AUTH_USER = env("BASIC_AUTH_USER");
-export const BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD");

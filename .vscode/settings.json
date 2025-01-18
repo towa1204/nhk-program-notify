@@ -3,7 +3,8 @@
   "deno.lint": true,
   "deno.testing.args": [
     "--unstable-kv",
-    "--allow-read"
+    "--allow-all",
+    "--env=.env.local"
   ],
   "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescriptreact]": {

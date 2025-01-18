@@ -1,6 +1,9 @@
 import { FreshContext } from "$fresh/server.ts";
 import { basicAuth } from "https://deno.land/x/basic_auth@v1.1.1/mod.ts";
-import { BASIC_AUTH_PASSWORD, BASIC_AUTH_USER } from "../env.ts";
+import { env } from "../env.ts";
+
+const BASIC_AUTH_USER = env("BASIC_AUTH_USER");
+const BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD");
 
 export async function handler(
   req: Request,
