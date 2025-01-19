@@ -1,5 +1,5 @@
-import { NhkApiRepository } from "../repository/NhkApiRepository.ts";
-import { NhkApiService } from "./NhkApiService.ts";
+import { ConfigNhkApiRepository } from "../repository/ConfigNhkApiRepository.ts";
+import { ConfigNhkApiService } from "./ConfigNhkApiService.ts";
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
 import { assertEquals, assertRejects } from "@std/assert";
@@ -7,7 +7,7 @@ import { NotFoundConfigError } from "../common/exception.ts";
 
 async function setup() {
   const kv = await Deno.openKv(":memory:");
-  const repository = new NhkApiRepository(kv);
+  const repository = new ConfigNhkApiRepository(kv);
   await setTestDataFromFile(
     kv,
     KV_KEYS.NHKAPI,
@@ -16,11 +16,11 @@ async function setup() {
   return { kv, repository };
 }
 
-Deno.test("NhkApiService", async (t) => {
+Deno.test("ConfigNhkApiService", async (t) => {
   await t.step("データを取得できる", async () => {
     const { kv, repository } = await setup();
 
-    const service = new NhkApiService(repository);
+    const service = new ConfigNhkApiService(repository);
     const result = await service.get();
     assertEquals(result, {
       "area": "横浜",
@@ -38,7 +38,7 @@ Deno.test("NhkApiService", async (t) => {
     const { kv, repository } = await setup();
 
     await kv.delete(KV_KEYS.NHKAPI);
-    const service = new NhkApiService(repository);
+    const service = new ConfigNhkApiService(repository);
     await assertRejects(async () => await service.get(), NotFoundConfigError);
 
     kv.close();
@@ -47,7 +47,7 @@ Deno.test("NhkApiService", async (t) => {
   await t.step("areaを100に変更できる", async () => {
     const { kv, repository } = await setup();
 
-    const service = new NhkApiService(repository);
+    const service = new ConfigNhkApiService(repository);
     const result = await service.validateAndSave({
       "area": "前橋",
       "services": [
@@ -65,7 +65,7 @@ Deno.test("NhkApiService", async (t) => {
   await t.step("nhkApiKeyがなくバリデーションエラー", async () => {
     const { kv, repository } = await setup();
 
-    const service = new NhkApiService(repository);
+    const service = new ConfigNhkApiService(repository);
     const result = await service.validateAndSave({
       "area": "前橋",
       "services": [

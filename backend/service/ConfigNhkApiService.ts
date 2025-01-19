@@ -1,20 +1,21 @@
 import { Repository } from "../common/types.ts";
-import { Program, ProgramSchema } from "../schema.ts";
+import { NhkApiSchema } from "../schema.ts";
+import { NhkApi } from "../schema.ts";
 import { createErrorMessage } from "../common/util.ts";
 
-export class ProgramService {
-  private readonly repository: Repository<Program>;
+export class ConfigNhkApiService {
+  private readonly repository: Repository<NhkApi>;
 
-  constructor(repository: Repository<Program>) {
+  constructor(repository: Repository<NhkApi>) {
     this.repository = repository;
   }
 
-  async get(): Promise<Program> {
+  async get(): Promise<NhkApi> {
     return await this.repository.get();
   }
 
   async validateAndSave(value: unknown) {
-    const result = ProgramSchema.safeParse(value);
+    const result = NhkApiSchema.safeParse(value);
     if (!result.success) {
       return {
         success: false,

@@ -1,21 +1,20 @@
 import { Repository } from "../common/types.ts";
-import { NhkApiSchema } from "../schema.ts";
-import { NhkApi } from "../schema.ts";
+import { Notification, NotificationSchema } from "../schema.ts";
 import { createErrorMessage } from "../common/util.ts";
 
-export class NhkApiService {
-  private readonly repository: Repository<NhkApi>;
+export class ConfigNotificationService {
+  private readonly repository: Repository<Notification>;
 
-  constructor(repository: Repository<NhkApi>) {
+  constructor(repository: Repository<Notification>) {
     this.repository = repository;
   }
 
-  async get(): Promise<NhkApi> {
+  async get(): Promise<Notification> {
     return await this.repository.get();
   }
 
   async validateAndSave(value: unknown) {
-    const result = NhkApiSchema.safeParse(value);
+    const result = NotificationSchema.safeParse(value);
     if (!result.success) {
       return {
         success: false,

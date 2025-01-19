@@ -1,13 +1,13 @@
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
 import { assertEquals, assertRejects } from "@std/assert";
-import { ProgramRepository } from "../repository/ProgramRepository.ts";
-import { ProgramService } from "./ProgramService.ts";
+import { ConfigProgramRepository } from "../repository/ConfigProgramRepository.ts";
+import { ConfigProgramsService } from "./ConfigProgramsService.ts";
 import { NotFoundConfigError } from "../common/exception.ts";
 
 async function setup() {
   const kv = await Deno.openKv(":memory:");
-  const repository = new ProgramRepository(kv);
+  const repository = new ConfigProgramRepository(kv);
   await setTestDataFromFile(
     kv,
     KV_KEYS.PROGRAMS,
@@ -16,11 +16,11 @@ async function setup() {
   return { kv, repository };
 }
 
-Deno.test("ProgramsService", async (t) => {
+Deno.test("ConfigProgramsService", async (t) => {
   await t.step("データを取得できる", async () => {
     const { kv, repository } = await setup();
 
-    const service = new ProgramService(repository);
+    const service = new ConfigProgramsService(repository);
     const result = await service.get();
     assertEquals(result, {
       "programs": [
@@ -46,7 +46,7 @@ Deno.test("ProgramsService", async (t) => {
     const { kv, repository } = await setup();
 
     await kv.delete(KV_KEYS.PROGRAMS);
-    const service = new ProgramService(repository);
+    const service = new ConfigProgramsService(repository);
     await assertRejects(async () => await service.get(), NotFoundConfigError);
 
     kv.close();
@@ -55,7 +55,7 @@ Deno.test("ProgramsService", async (t) => {
   await t.step("番組(みんなのうた)を削除できる", async () => {
     const { kv, repository } = await setup();
 
-    const service = new ProgramService(repository);
+    const service = new ConfigProgramsService(repository);
     const result = await service.validateAndSave({
       "programs": [
         {
@@ -77,7 +77,7 @@ Deno.test("ProgramsService", async (t) => {
   await t.step("すべての番組を削除できる", async () => {
     const { kv, repository } = await setup();
 
-    const service = new ProgramService(repository);
+    const service = new ConfigProgramsService(repository);
     const result = await service.validateAndSave({
       "programs": [],
     });
@@ -90,7 +90,7 @@ Deno.test("ProgramsService", async (t) => {
   await t.step("番組を空文字で送信するとバリデーションエラー", async () => {
     const { kv, repository } = await setup();
 
-    const service = new ProgramService(repository);
+    const service = new ConfigProgramsService(repository);
     const result = await service.validateAndSave({
       "programs": [
         {

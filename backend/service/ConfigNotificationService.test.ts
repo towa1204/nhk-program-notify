@@ -1,13 +1,13 @@
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
 import { assertEquals, assertRejects } from "@std/assert";
-import { NotificationRepository } from "../repository/NotificationRepository.ts";
-import { NotificationService } from "./NotificationService.ts";
+import { ConfigNotificationRepository } from "../repository/ConfigNotificationRepository.ts";
+import { ConfigNotificationService } from "./ConfigNotificationService.ts";
 import { NotFoundConfigError } from "../common/exception.ts";
 
 async function setup() {
   const kv = await Deno.openKv(":memory:");
-  const repository = new NotificationRepository(kv);
+  const repository = new ConfigNotificationRepository(kv);
   await setTestDataFromFile(
     kv,
     KV_KEYS.NOTIFICATION,
@@ -16,11 +16,11 @@ async function setup() {
   return { kv, repository };
 }
 
-Deno.test("NotificationService", async (t) => {
+Deno.test("ConfigNotificationService", async (t) => {
   await t.step("データを取得できる", async () => {
     const { kv, repository } = await setup();
 
-    const service = new NotificationService(repository);
+    const service = new ConfigNotificationService(repository);
     const result = await service.get();
     assertEquals(result, {
       "selectNow": "LINE",
@@ -37,7 +37,7 @@ Deno.test("NotificationService", async (t) => {
     const { kv, repository } = await setup();
 
     await kv.delete(KV_KEYS.NOTIFICATION);
-    const service = new NotificationService(repository);
+    const service = new ConfigNotificationService(repository);
     await assertRejects(async () => await service.get(), NotFoundConfigError);
 
     kv.close();
@@ -46,7 +46,7 @@ Deno.test("NotificationService", async (t) => {
   await t.step("useridを変更できる", async () => {
     const { kv, repository } = await setup();
 
-    const service = new NotificationService(repository);
+    const service = new ConfigNotificationService(repository);
     const result = await service.validateAndSave({
       "selectNow": "LINE",
       "LineApi": {
@@ -63,7 +63,7 @@ Deno.test("NotificationService", async (t) => {
   await t.step("accessTokenがなくバリデーションエラー", async () => {
     const { kv, repository } = await setup();
 
-    const service = new NotificationService(repository);
+    const service = new ConfigNotificationService(repository);
     const result = await service.validateAndSave({
       "selectNow": "LINE",
       "LineApi": {
