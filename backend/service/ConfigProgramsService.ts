@@ -1,20 +1,20 @@
 import { Repository } from "../common/types.ts";
-import { Program, ProgramSchema } from "../schema.ts";
+import { ConfigProgram, ConfigProgramSchema } from "../schema.ts";
 import { createErrorMessage } from "../common/util.ts";
 
 export class ConfigProgramsService {
-  private readonly repository: Repository<Program>;
+  private readonly repository: Repository<ConfigProgram>;
 
-  constructor(repository: Repository<Program>) {
+  constructor(repository: Repository<ConfigProgram>) {
     this.repository = repository;
   }
 
-  async get(): Promise<Program> {
+  async get(): Promise<ConfigProgram> {
     return await this.repository.get();
   }
 
   async validateAndSave(value: unknown) {
-    const result = ProgramSchema.safeParse(value);
+    const result = ConfigProgramSchema.safeParse(value);
     if (!result.success) {
       return {
         success: false,
