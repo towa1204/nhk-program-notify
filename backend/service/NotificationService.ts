@@ -19,6 +19,7 @@ export class NotificationService implements INotificationService {
       return;
     }
     const message = this.buildMessage(programs);
+    console.log(message);
     await this.notificationClient.send(message);
   }
 
