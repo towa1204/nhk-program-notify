@@ -1,20 +1,33 @@
+/**
+ * 日付をJSTのYYYY-MM-DDに変換する
+ * @param date Dateオブジェクト
+ * @returns YYYY-MM-DD
+ */
+export function today(date: Date): string {
+  return toNhkFormat(date);
+}
+
+/**
+ * 指定した日付を含めた1週間分の日付をJSTのYYYY-MM-DD形式で返す
+ * @param date
+ * @returns
+ */
+export function week(date: Date): string[] {
+  const weekDates = getNextWeekDates(date);
+  return weekDates.map((date) => toNhkFormat(date));
+}
+
 // 与えられたDateオブジェクトの次の日のDateオブジェクトを返す
-export function getNextDate(date: Date) {
+function getNextDate(date: Date) {
   const nextDate = new Date(date);
   nextDate.setDate(date.getDate() + 1);
   return nextDate;
 }
 
-export function getNextWeekDate(date: Date) {
-  const nextDate = new Date(date);
-  nextDate.setDate(date.getDate() + 7);
-  return nextDate;
-}
-
 // 与えられたDateオブジェクトの日付から1週間分の日付のDateオブジェクトの配列を返す
-export function getNextWeekDates(date: Date) {
+function getNextWeekDates(date: Date) {
   const weekDates: Date[] = [];
-  for (let i = 0; i <= 7; i++) {
+  for (let i = 0; i < 7; i++) {
     weekDates.push(date);
     date = getNextDate(date);
   }
@@ -26,7 +39,7 @@ export function getNextWeekDates(date: Date) {
  * @param date Dateオブジェクト
  * @returns YYYY-MM-DD
  */
-export function convertNHKFormat(dateObject: Date) {
+function toNhkFormat(dateObject: Date) {
   const { year, month, date } = getJSTDateParts(dateObject);
   return `${year}-${month}-${date}`;
 }
@@ -36,7 +49,7 @@ export function convertNHKFormat(dateObject: Date) {
  * @param rawDate JSTに変換したいDateオブジェクト
  * @returns JSTの{年,月,日,時,分,秒}
  */
-export function getJSTDateParts(dateObject: Date) {
+function getJSTDateParts(dateObject: Date) {
   // 日本時間（JST）に変換
   // UTC+9時間を加算
 
@@ -62,7 +75,7 @@ export function getJSTDateParts(dateObject: Date) {
  * ISO8601拡張形式の日付をJSTの MM/DD hh:mm 形式に変換する
  * @param iso8601extDate ISO8601拡張形式に日付文字列
  */
-export function convertJSTMMDDhhmmFormat(iso8601extDate: string) {
+export function toJSTMMDDhhmmFormat(iso8601extDate: string) {
   const { month, date, hours, minutes } = getJSTDateParts(
     new Date(iso8601extDate),
   );

@@ -1,6 +1,6 @@
 import { ILineClient } from "../client/LineClient.ts";
 import { WatchProgram } from "../client/nhk_types.ts";
-import { convertJSTMMDDhhmmFormat } from "../common/date.ts";
+import { toJSTMMDDhhmmFormat } from "../common/date.ts";
 
 export interface INotificationService {
   execute: (programs: WatchProgram[]) => Promise<void>;
@@ -24,8 +24,8 @@ export class NotificationService implements INotificationService {
 
   private buildMessage(programs: WatchProgram[]) {
     const message = programs.map((program, index) => {
-      const startMMDDhhmm = convertJSTMMDDhhmmFormat(program.start_time);
-      const endMMDDhhmm = convertJSTMMDDhhmmFormat(program.end_time);
+      const startMMDDhhmm = toJSTMMDDhhmmFormat(program.start_time);
+      const endMMDDhhmm = toJSTMMDDhhmmFormat(program.end_time);
       return [
         `[${index + 1}] ${startMMDDhhmm} ~ ${endMMDDhhmm}`,
         `${program.title}`,
