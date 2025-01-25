@@ -2,8 +2,7 @@ import { ConfigNhkApiRepository } from "../repository/ConfigNhkApiRepository.ts"
 import { ConfigNhkApiService } from "./ConfigNhkApiService.ts";
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
-import { assertEquals, assertRejects } from "@std/assert";
-import { NotFoundConfigError } from "../common/exception.ts";
+import { assertEquals } from "@std/assert";
 
 async function setup() {
   const kv = await Deno.openKv(":memory:");

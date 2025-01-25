@@ -1,12 +1,12 @@
 {
   "lock": false,
   "tasks": {
-    "test": "deno test -A --unstable-kv --parallel",
+    "test": "KV_PATH=:memory: deno test -A --unstable-kv --parallel",
     "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx && deno task test",
     "manifest": "deno task cli manifest $(pwd)",
-    "start": "deno run -A --unstable-kv --watch=static/,routes/ --env=.env.local dev.ts",
+    "start": "KV_PATH=:memory: deno run -A --unstable-kv --watch=static/,routes/ --env=.env.local dev.ts",
     "build": "CRON_ENABLED=false deno run -A --unstable-kv --env=.env.local dev.ts build",
-    "preview": "deno run -A --unstable-kv --env=.env.local main.ts",
+    "preview": "KV_PATH=:memory: deno run -A --unstable-kv --env=.env.local main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update ."
   },
   "lint": {

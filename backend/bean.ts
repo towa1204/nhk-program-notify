@@ -1,7 +1,5 @@
 import { LineClient } from "./client/LineClient.ts";
 import { NhkClient } from "./client/NhkClient.ts";
-import { KV_KEYS } from "./common/kv_key.ts";
-import { setTestDataFromFile } from "./common/kv_test_helper.ts";
 import { ConfigNhkApiRepository } from "./repository/ConfigNhkApiRepository.ts";
 import { ConfigNotificationRepository } from "./repository/ConfigNotificationRepository.ts";
 import { ConfigProgramRepository } from "./repository/ConfigProgramRepository.ts";
@@ -48,7 +46,9 @@ export function createBeans(kv: Deno.Kv) {
   };
 }
 
-const kv = await Deno.openKv(":memory:");
+const kv = Deno.env.get("KV_PATH") === undefined
+  ? await Deno.openKv()
+  : await Deno.openKv(Deno.env.get("KV_PATH")!);
 
 export const {
   configNhkApiService,

@@ -1,9 +1,8 @@
 import { setTestDataFromFile } from "../common/kv_test_helper.ts";
 import { KV_KEYS } from "../common/kv_key.ts";
-import { assertEquals, assertRejects } from "@std/assert";
+import { assertEquals } from "@std/assert";
 import { ConfigProgramRepository } from "../repository/ConfigProgramRepository.ts";
 import { ConfigProgramsService } from "./ConfigProgramsService.ts";
-import { NotFoundConfigError } from "../common/exception.ts";
 
 async function setup() {
   const kv = await Deno.openKv(":memory:");
