@@ -3,7 +3,7 @@ import { Repository } from "../common/types.ts";
 import { Notification } from "../schema.ts";
 
 export interface ILineClient {
-  send: (usedId: string, accessToken: string, message: string) => Promise<void>;
+  send: (message: string) => Promise<void>;
 }
 
 export class LineClient implements ILineClient {
@@ -15,9 +15,7 @@ export class LineClient implements ILineClient {
     this.repository = repository;
   }
 
-  public async send(
-    message: string,
-  ): Promise<void> {
+  public async send(message: string): Promise<void> {
     const { userid, accessToken } = (await this.repository.get()).LineApi;
 
     const payload = {
