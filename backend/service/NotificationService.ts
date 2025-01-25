@@ -14,7 +14,10 @@ export class NotificationService implements INotificationService {
   }
 
   public async execute(programs: WatchProgram[]) {
-    if (programs.length === 0) return;
+    if (programs.length === 0) {
+      console.log("通知対象の番組がありません");
+      return;
+    }
     const message = this.buildMessage(programs);
     await this.notificationClient.send(message);
   }
