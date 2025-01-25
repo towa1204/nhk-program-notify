@@ -1,5 +1,5 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { programService } from "../backend/bean.ts";
+import { configProgramsService } from "../backend/bean.ts";
 import {
   getErrorMessageOnCookie,
   setErrorMessageOnCookie,
@@ -13,7 +13,7 @@ export const handler: Handlers = {
   async GET(req, ctx) {
     const { message, resHeaders } = getErrorMessageOnCookie(req.headers);
 
-    const programProps = await programService.get();
+    const programProps = await configProgramsService.get();
 
     const initData: WithErrorMessage<ConfigProgram> = {
       ...programProps,
@@ -35,7 +35,7 @@ export const handler: Handlers = {
       "Location": ctx.url.pathname,
     });
 
-    const result = await programService.validateAndSave({
+    const result = await configProgramsService.validateAndSave({
       programs: receivedPrograms,
     });
     if (!result.success) {

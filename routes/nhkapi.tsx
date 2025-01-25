@@ -6,7 +6,7 @@ import {
   getErrorMessageOnCookie,
   setErrorMessageOnCookie,
 } from "../backend/cookie.ts";
-import { nhkApiService } from "../backend/bean.ts";
+import { configNhkApiService } from "../backend/bean.ts";
 import { NhkApi } from "../backend/schema.ts";
 import { WithErrorMessage } from "./types.ts";
 import { HomeButton } from "../components/HomeButton.tsx";
@@ -21,7 +21,7 @@ export const handler: Handlers = {
   async GET(req, ctx) {
     const { message, resHeaders } = getErrorMessageOnCookie(req.headers);
 
-    const nhkapiProps = await nhkApiService.get();
+    const nhkapiProps = await configNhkApiService.get();
 
     const initData: WithErrorMessage<NhkApi> = {
       ...nhkapiProps,
@@ -36,7 +36,7 @@ export const handler: Handlers = {
       "Location": ctx.url.pathname,
     });
 
-    const result = await nhkApiService.validateAndSave({
+    const result = await configNhkApiService.validateAndSave({
       area: form.get("area"),
       services: ["g1", "e1"],
       nhkApiKey: form.get("apiKey"),
