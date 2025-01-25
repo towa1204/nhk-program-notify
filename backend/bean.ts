@@ -49,21 +49,6 @@ export function createBeans(kv: Deno.Kv) {
 }
 
 const kv = await Deno.openKv(":memory:");
-await setTestDataFromFile(
-  kv,
-  KV_KEYS.NHKAPI,
-  "backend/testdata/config_nhkapi.json",
-);
-await setTestDataFromFile(
-  kv,
-  KV_KEYS.NOTIFICATION,
-  "backend/testdata/config_notification.json",
-);
-await setTestDataFromFile(
-  kv,
-  KV_KEYS.PROGRAMS,
-  "backend/testdata/config_programs.json",
-);
 
 export const {
   configNhkApiService,

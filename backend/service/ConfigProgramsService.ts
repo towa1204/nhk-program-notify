@@ -1,6 +1,7 @@
 import { Repository } from "../common/types.ts";
 import { ConfigProgram, ConfigProgramSchema } from "../schema.ts";
 import { createErrorMessage } from "../common/util.ts";
+import { NotFoundConfigError } from "../common/exception.ts";
 
 export class ConfigProgramsService {
   private readonly repository: Repository<ConfigProgram>;
@@ -10,7 +11,16 @@ export class ConfigProgramsService {
   }
 
   async get(): Promise<ConfigProgram> {
-    return await this.repository.get();
+    try {
+      return await this.repository.get();
+    } catch (e) {
+      if (e instanceof NotFoundConfigError) {
+        return Promise.resolve({
+          programs: [],
+        });
+      }
+      throw e;
+    }
   }
 
   async validateAndSave(value: unknown) {

@@ -42,16 +42,6 @@ Deno.test("ConfigProgramsService", async (t) => {
     kv.close();
   });
 
-  await t.step("データがなければ例外を送出する", async () => {
-    const { kv, repository } = await setup();
-
-    await kv.delete(KV_KEYS.PROGRAMS);
-    const service = new ConfigProgramsService(repository);
-    await assertRejects(async () => await service.get(), NotFoundConfigError);
-
-    kv.close();
-  });
-
   await t.step("番組(みんなのうた)を削除できる", async () => {
     const { kv, repository } = await setup();
 

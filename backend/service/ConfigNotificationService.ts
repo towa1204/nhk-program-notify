@@ -1,6 +1,7 @@
 import { Repository } from "../common/types.ts";
 import { Notification, NotificationSchema } from "../schema.ts";
 import { createErrorMessage } from "../common/util.ts";
+import { NotFoundConfigError } from "../common/exception.ts";
 
 export class ConfigNotificationService {
   private readonly repository: Repository<Notification>;
@@ -10,7 +11,20 @@ export class ConfigNotificationService {
   }
 
   async get(): Promise<Notification> {
-    return await this.repository.get();
+    try {
+      return await this.repository.get();
+    } catch (e) {
+      if (e instanceof NotFoundConfigError) {
+        return Promise.resolve({
+          selectNow: "LINE",
+          LineApi: {
+            userid: "",
+            accessToken: "",
+          },
+        });
+      }
+      throw e;
+    }
   }
 
   async validateAndSave(value: unknown) {

@@ -33,16 +33,6 @@ Deno.test("ConfigNotificationService", async (t) => {
     kv.close();
   });
 
-  await t.step("データがなければ例外を送出する", async () => {
-    const { kv, repository } = await setup();
-
-    await kv.delete(KV_KEYS.NOTIFICATION);
-    const service = new ConfigNotificationService(repository);
-    await assertRejects(async () => await service.get(), NotFoundConfigError);
-
-    kv.close();
-  });
-
   await t.step("useridを変更できる", async () => {
     const { kv, repository } = await setup();
 

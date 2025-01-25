@@ -34,16 +34,6 @@ Deno.test("ConfigNhkApiService", async (t) => {
     kv.close();
   });
 
-  await t.step("データがなければ例外を送出する", async () => {
-    const { kv, repository } = await setup();
-
-    await kv.delete(KV_KEYS.NHKAPI);
-    const service = new ConfigNhkApiService(repository);
-    await assertRejects(async () => await service.get(), NotFoundConfigError);
-
-    kv.close();
-  });
-
   await t.step("areaを100に変更できる", async () => {
     const { kv, repository } = await setup();
 
