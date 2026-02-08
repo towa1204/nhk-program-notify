@@ -11,6 +11,27 @@ export default function ProgramInput({
 }) {
   const programEnabled = useSignal(initData.enabled);
   const programTitle = useSignal(initData.title);
+  const isChecking = useSignal(false);
+
+  const checkProgramExists = async () => {
+    if (!programTitle.value.trim()) return;
+
+    isChecking.value = true;
+    try {
+      const res = await fetch("/api/program-check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: programTitle.value }),
+      });
+      const data = await res.json();
+      alert(data.message ?? "番組チェック結果を取得できませんでした");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "不明なエラー";
+      alert(`番組チェックに失敗しました: ${message}`);
+    } finally {
+      isChecking.value = false;
+    }
+  };
 
   return (
     <div className="mt-3 flex flex-row">
@@ -39,10 +60,29 @@ export default function ProgramInput({
           type="text"
           name="programTitle"
           value={programTitle}
-          className="w-full rounded-lg border px-4 py-2 pr-10 shadow outline-none hover:border-gray-500"
+          className="w-full rounded-lg border px-4 py-2 pr-16 shadow outline-none hover:border-gray-500"
           placeholder={placeholder}
           onChange={(e) => programTitle.value = e.currentTarget.value}
         />
+        {programTitle.value.trim() && (
+          <button
+            type="button"
+            onClick={() => checkProgramExists()}
+            disabled={isChecking.value}
+            className="absolute right-9 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none disabled:opacity-50"
+            aria-label="番組存在チェック"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="16"
+              width="16"
+              viewBox="0 -960 960 960"
+              fill="currentColor"
+            >
+              <path d="M382-240 154-468l56-56 172 172 368-368 56 56-424 424Z" />
+            </svg>
+          </button>
+        )}
         <button
           type="button"
           onClick={() => deletePrograms()}

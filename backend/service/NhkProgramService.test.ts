@@ -88,4 +88,64 @@ Deno.test("NhkProgramService", async (t) => {
     assertEquals(programs, []);
     assertSpyCalls(nhkApiClientStub, 1);
   });
+
+  await t.step("findByTitleInDatesで部分一致が取得できる", async () => {
+    using nhkApiClientStub = stub(
+      mockNhkApiClient,
+      "fetchPrograms",
+      returnsNext([
+        Promise.resolve(allPrograms),
+      ]),
+    );
+    const mockRepository: Repository<ConfigProgram> = {
+      async get() {
+        return await Promise.resolve({ programs: [] });
+      },
+      async save(_) {},
+    };
+
+    const nhkProgramService = new NhkProgramService(
+      mockNhkApiClient,
+      mockRepository,
+    );
+
+    const programs = await nhkProgramService.findByTitleInDates([
+      "2026-02-08",
+    ], "大相撲");
+
+    assertEquals(programs.length, 1);
+    assertEquals(
+      programs[0].title,
+      "大相撲（２０２６年）　幕内の全取組　初場所　七日目",
+    );
+    assertSpyCalls(nhkApiClientStub, 1);
+  });
+
+  await t.step("findByTitleInDatesで一致しない場合は空配列", async () => {
+    using nhkApiClientStub = stub(
+      mockNhkApiClient,
+      "fetchPrograms",
+      returnsNext([
+        Promise.resolve(allPrograms),
+      ]),
+    );
+    const mockRepository: Repository<ConfigProgram> = {
+      async get() {
+        return await Promise.resolve({ programs: [] });
+      },
+      async save(_) {},
+    };
+
+    const nhkProgramService = new NhkProgramService(
+      mockNhkApiClient,
+      mockRepository,
+    );
+
+    const programs = await nhkProgramService.findByTitleInDates([
+      "2026-02-08",
+    ], "存在しないタイトル");
+
+    assertEquals(programs, []);
+    assertSpyCalls(nhkApiClientStub, 1);
+  });
 });
