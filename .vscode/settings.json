@@ -1,5 +1,6 @@
 {
   "deno.enable": true,
+  "deno.envFile": ".env.local",
   "deno.lint": true,
   "deno.testing.args": [
     "--unstable-kv",
