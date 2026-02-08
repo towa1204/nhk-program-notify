@@ -28,7 +28,7 @@ Deno.test("NhkClient", async (t) => {
       const { mockRepository } = setup(env("TEST_NHK_API_KEY"));
 
       const nhkClient = new NhkClient(mockRepository);
-      const res = await nhkClient.fetchPrograms("2025-01-19"); // TODO: テスト実行日の日付を取得させる
+      const res = await nhkClient.fetchPrograms("2026-02-08"); // TODO: テスト実行日の日付を取得させる
       console.log(res);
     },
   });
@@ -37,11 +37,11 @@ Deno.test("NhkClient", async (t) => {
     const { mockRepository } = setup("dummy-api-key");
 
     const g1Reponse =
-      (await import("../testdata/input_20250119_g1_yokohama.json", {
+      (await import("../testdata/input_20260208_g1_yokohama.json", {
         with: { type: "json" },
       })).default;
     const e1Response =
-      (await import("../testdata/input_20250119_e1_yokohama.json", {
+      (await import("../testdata/input_20260208_e1_yokohama.json", {
         with: { type: "json" },
       })).default;
 
@@ -55,14 +55,14 @@ Deno.test("NhkClient", async (t) => {
     );
 
     const nhkClient = new NhkClient(mockRepository);
-    const programs = await nhkClient.fetchPrograms("2025-01-19");
+    const programs = await nhkClient.fetchPrograms("2026-02-08");
 
     // fetchが2回呼ばれているか
     assertSpyCalls(fetchStub, 2);
 
     // programsの結果が一致しているか
     const expectPrograms =
-      (await import("../testdata/expect_20250119_programs.json", {
+      (await import("../testdata/expect_20260208_programs.json", {
         with: { type: "json" },
       })).default.result;
     assertEquals(programs, expectPrograms);
@@ -84,7 +84,7 @@ Deno.test("NhkClient", async (t) => {
     const nhkClient = new NhkClient(mockRepository);
 
     const apiClientError = await assertRejects(async () => {
-      await nhkClient.fetchPrograms("2025-01-19");
+      await nhkClient.fetchPrograms("2026-02-08");
     }, ApiClientError);
     console.log(apiClientError.message);
   });

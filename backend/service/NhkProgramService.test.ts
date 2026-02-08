@@ -37,8 +37,8 @@ Deno.test("NhkProgramService", async (t) => {
       mockRepository,
     );
     const programs = await nhkProgramService.listByDates([
-      "2025-01-19",
-      "2025-01-20",
+      "2026-02-08",
+      "2026-02-09",
     ]);
 
     assertEquals(programs, allWatchPrograms);
@@ -57,7 +57,7 @@ Deno.test("NhkProgramService", async (t) => {
       mockNhkApiClient,
       mockRepository,
     );
-    const programs = await nhkProgramService.listByDates(["2025-01-19"]);
+    const programs = await nhkProgramService.listByDates(["2026-02-08"]);
 
     assertEquals(programs, []);
   });
@@ -83,7 +83,7 @@ Deno.test("NhkProgramService", async (t) => {
       mockNhkApiClient,
       mockRepository,
     );
-    const programs = await nhkProgramService.listByDates(["2025-01-19"]);
+    const programs = await nhkProgramService.listByDates(["2026-02-08"]);
 
     assertEquals(programs, []);
     assertSpyCalls(nhkApiClientStub, 1);
