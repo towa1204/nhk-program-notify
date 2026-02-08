@@ -1,11 +1,7 @@
 import { ApiClientError } from "../common/exception.ts";
 import { Repository } from "../common/types.ts";
 import { NhkApi } from "../schema.ts";
-import {
-  BroadcastEvent,
-  PgDateTvReq,
-  PgDateTvResponse,
-} from "./nhk_types.ts";
+import { BroadcastEvent, PgDateTvReq, PgDateTvResponse } from "./nhk_types.ts";
 
 export interface INhkClient {
   /**

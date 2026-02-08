@@ -63,8 +63,7 @@ const e1Programs: BroadcastEvent[] = [
       ],
     },
     "detailedDescription": {
-      "epg200":
-        "今回は、おなじみの日本の昔話の一編を取り上げて、その深みへ。",
+      "epg200": "今回は、おなじみの日本の昔話の一編を取り上げて、その深みへ。",
     },
   },
 ];

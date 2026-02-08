@@ -1,6 +1,7 @@
 # nhk-program-notify
 
 ## 機能概要
+
 - 監視したい番組キーワードをWeb UIで設定できる
 - NHK API（放送エリア・APIキー）を設定できる
 - 通知先（LINEのユーザーID/アクセストークン）を設定できる
@@ -8,6 +9,7 @@
 - 日次・週次の定期通知（Deno cron）を実行できる
 
 ## システム構成
+
 - フロントエンド: Fresh（設定ページ `\/program`, `\/nhkapi`, `\/notification`）
 - バックエンド: Deno KV に設定保存、サービス層で番組取得と通知実行
 - 外部API:
@@ -20,5 +22,6 @@
   - Basic認証でUIアクセス制御（`.env` の `BASIC_AUTH_*`）
 
 ## テスト方法
+
 - 実行コマンド: `deno task test`
 - 内部で `KV_PATH=:memory:` と `--unstable-kv` を利用する
