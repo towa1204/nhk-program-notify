@@ -1,7 +1,7 @@
 import { ApiClientError } from "../common/exception.ts";
 import { Repository } from "../common/types.ts";
 import { NhkApi } from "../schema.ts";
-import { Program, ProgramList, ProgramListReq } from "./nhk_types.ts";
+import { BroadcastEvent, PgDateTvReq, PgDateTvResponse } from "./nhk_types.ts";
 
 export interface INhkClient {
   /**
@@ -9,11 +9,11 @@ export interface INhkClient {
    * @param date 放送日
    * @returns 番組情報
    */
-  fetchPrograms: (date: string) => Promise<Program[]>;
+  fetchPrograms: (date: string) => Promise<BroadcastEvent[]>;
 }
 
 export class NhkClient implements INhkClient {
-  private static readonly API_BASE_PATH = "https://api.nhk.or.jp/v2";
+  private static readonly API_BASE_PATH = "https://program-api.nhk.jp/v3";
 
   public static readonly AREA_MASTER_MAP: Map<string, string> = new Map([
     ["札幌", "010"],
@@ -80,10 +80,10 @@ export class NhkClient implements INhkClient {
 
   public async fetchPrograms(
     date: string,
-  ): Promise<Program[]> {
+  ): Promise<BroadcastEvent[]> {
     const { area, services, nhkApiKey: apikey } = await this.repository.get();
 
-    const programs: Program[] = [];
+    const programs: BroadcastEvent[] = [];
     for (const service of services) {
       const url = this.buildUrl({ area, service, date, apikey });
 
@@ -93,18 +93,18 @@ export class NhkClient implements INhkClient {
           url,
           status: res.status,
           responseBody: await res.text(),
-          message: "ProgramList APIへの接続に失敗しました",
+          message: "PgDateTv APIへの接続に失敗しました",
         });
       }
-      const programList = await res.json() as ProgramList;
-      programs.push(...programList.list[service]);
+      const response = await res.json() as PgDateTvResponse;
+      programs.push(...response[service].publication);
     }
 
     return programs;
   }
 
-  private buildUrl({ area, service, date, apikey }: ProgramListReq) {
+  private buildUrl({ area, service, date, apikey }: PgDateTvReq) {
     const areaNumber = NhkClient.AREA_MASTER_MAP.get(area);
-    return `${NhkClient.API_BASE_PATH}/pg/list/${areaNumber}/${service}/${date}.json?key=${apikey}`;
+    return `${NhkClient.API_BASE_PATH}/papiPgDateTv?service=${service}&area=${areaNumber}&date=${date}&key=${apikey}`;
   }
 }

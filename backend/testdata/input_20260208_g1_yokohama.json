@@ -1,0 +1,27 @@
+{
+  "g1": {
+    "publishedOn": [],
+    "publication": [
+      {
+        "id": "g1-130-202602080003",
+        "name": "大相撲（２０２６年）　幕内の全取組　初場所　七日目",
+        "description": "",
+        "startDate": "2026-02-08T03:55:00+09:00",
+        "endDate": "2026-02-08T04:20:00+09:00",
+        "identifierGroup": {
+          "genre": [
+            { "id": "0105" },
+            { "id": "0100" },
+            { "id": "0804" }
+          ]
+        },
+        "misc": {
+          "actList": []
+        },
+        "detailedDescription": {
+          "epg200": ""
+        }
+      }
+    ]
+  }
+}

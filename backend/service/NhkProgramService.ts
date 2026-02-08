@@ -1,4 +1,4 @@
-import { Program, WatchProgram } from "../client/nhk_types.ts";
+import { BroadcastEvent, WatchProgram } from "../client/nhk_types.ts";
 import { INhkClient } from "../client/NhkClient.ts";
 import { Repository } from "../common/types.ts";
 import { ConfigProgram } from "../schema.ts";
@@ -22,7 +22,7 @@ export class NhkProgramService implements INhkProgramService {
   }
 
   public async listByDates(dates: string[]) {
-    const allPrograms: Program[] = [];
+    const allPrograms: BroadcastEvent[] = [];
     for (const date of dates) {
       const programs = await this.nhkClient.fetchPrograms(date);
       allPrograms.push(...programs);
@@ -32,22 +32,34 @@ export class NhkProgramService implements INhkProgramService {
   }
 
   private async selectSubscribePrograms(
-    programs: Program[],
+    programs: BroadcastEvent[],
   ): Promise<WatchProgram[]> {
     const keywords = (await this.repository.get()).programs;
     return programs.filter((program) =>
       keywords.some((keyword) =>
-        keyword.enabled && program.title.includes(keyword.title)
+        keyword.enabled && program.name.includes(keyword.title)
       )
     )
       .map((program) => ({
-        "title": program.title,
-        "subtitle": program.subtitle,
-        "content": program.content,
-        "act": program.act,
-        "genres": program.genres,
-        "start_time": program.start_time,
-        "end_time": program.end_time,
+        "title": program.name ?? "",
+        "subtitle": program.description ?? "",
+        "content": program.detailedDescription?.epg200 ?? "",
+        "act": this.buildAct(program),
+        "genres": program.identifierGroup?.genre?.map((genre) => genre.id) ??
+          [],
+        "start_time": program.startDate ?? "",
+        "end_time": program.endDate ?? "",
       }));
+  }
+
+  private buildAct(program: BroadcastEvent): string {
+    const actList = program.misc?.actList ?? [];
+    return actList.map((act) => {
+      if (!act.role) {
+        return act.name;
+      }
+      const separator = act.role.endsWith("：") ? "" : "：";
+      return `${act.role}${separator}${act.name}`;
+    }).join("、");
   }
 }
