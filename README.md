@@ -23,5 +23,6 @@
 
 ## テスト方法
 
-- 実行コマンド: `deno task test`
-- 内部で `KV_PATH=:memory:` と `--unstable-kv` を利用する
+- pushするまえに`deno task check`を実行
+- API関連処理に変更がある場合、APIリクエストを伴うテストも実施する
+- デフォルトではignoreとなっているため、テスト一覧から見つけてignoreをtrueにする
