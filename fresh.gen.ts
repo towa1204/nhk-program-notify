@@ -7,6 +7,7 @@ import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
+import * as $api_program_check from "./routes/api/program-check.ts";
 import * as $index from "./routes/index.tsx";
 import * as $nhkapi from "./routes/nhkapi.tsx";
 import * as $notification from "./routes/notification.tsx";
@@ -24,6 +25,7 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
     "./routes/_middleware.ts": $_middleware,
+    "./routes/api/program-check.ts": $api_program_check,
     "./routes/index.tsx": $index,
     "./routes/nhkapi.tsx": $nhkapi,
     "./routes/notification.tsx": $notification,
