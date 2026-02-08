@@ -10,7 +10,7 @@
 
 ## システム構成
 
-- フロントエンド: Fresh（設定ページ `\/program`, `\/nhkapi`, `\/notification`）
+- フロントエンド: Fresh（設定ページ `/program`, `/nhkapi`, `/notification`）
 - バックエンド: Deno KV に設定保存、サービス層で番組取得と通知実行
 - 外部API:
   - NHK Program API v3（`papiPgDateTv`）から番組取得
